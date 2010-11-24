@@ -1,0 +1,51 @@
+RockBand StageKit API
+Linux support libraries for the PDP Rock Band Stage Kit, including full control over the strobe, fog, and led lights.
+-----------------------------
+
+USAGE:
+    To use the API, simply put the stagekit.h and stagekit.c files in the relevant spot of your project directory,
+#include them, and then issue an sk_init(char *filename) where filename is the location of the appropriate event file
+(such as /dev/input/event5), and then use any of the other commands according to what you want to do.
+
+sk_close(void)
+    Closes the file handles for the stage kit.
+
+sk_alloff()
+    Sends a "panic" signal to turn everything off at once.
+
+sk_nostrobe()
+    Disable strobe
+
+sk_slowstrobe()
+    Sets a slow strobe
+
+sk_medstrobe()
+    Sets a medium strobe
+
+sk_faststrobe()
+    Sets a fast strobe
+
+sk_fasteststrobe()
+    Sets the fastest strobe
+
+sk_fogon()
+    Turn on the fogger
+
+sk_fogoff()
+    Turn off the fogger
+
+sk_setred(i)
+    Set the red leds according to the first 8 bits of i, where each bit represents a single led
+
+sk_setyellow(i)
+    Set the yellow leds according to the first 8 bits of i, where each bit represents a single led
+
+sk_setgreen(i)
+    Set the green leds according to the first 8 bits of i, where each bit represents a single led
+
+sk_setblue(i)
+    Set the blue leds according to the first 8 bits of i, where each bit represents a single led
+
+sk_setleds(r,y,g,b)
+    Set all the led arrays, with the same convention as the other ones, but all at once, with r being red, y being yellow, etc.
+    Merely a convenience function; the same as calling the sk_setred, sk_setyellow, sk_setgreen, and sk_setblue functions one after another
