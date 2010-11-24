@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<CodeBlocks_layout_file>
+	<ActiveTarget name="Debug" />
+	<File name="stagekit.c" open="1" top="0" tabpos="4">
+		<Cursor position="1928" topLine="25" />
+	</File>
+	<File name="stagekit.h" open="1" top="1" tabpos="1">
+		<Cursor position="1804" topLine="27" />
+	</File>
+	<File name="wxStagekitApp.cpp" open="1" top="0" tabpos="3">
+		<Cursor position="705" topLine="0" />
+	</File>
+	<File name="wxStagekitMain.cpp" open="1" top="0" tabpos="2">
+		<Cursor position="26816" topLine="379" />
+	</File>
+	<File name="wxStagekitMain.h" open="0" top="0" tabpos="0">
+		<Cursor position="1116" topLine="6" />
+	</File>
+	<File name="wxsmith/wxStagekitframe.wxs" open="0" top="0" tabpos="0">
+		<Cursor position="872" topLine="0" />
+	</File>
+</CodeBlocks_layout_file>
