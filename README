@@ -7,7 +7,10 @@ USAGE:
 #include them, and then issue an sk_init(char *filename) where filename is the location of the appropriate event file
 (such as /dev/input/event5), and then use any of the other commands according to what you want to do.
 
-sk_close(void)
+sk_init(char *filename)
+    Open an event interface file for a stage kit. If set to NULL, the API will attempt to probe for one automatically.
+
+sk_close()
     Closes the file handles for the stage kit.
 
 sk_alloff()
