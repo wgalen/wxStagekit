@@ -41,6 +41,7 @@
 #include <string.h>
 #include <sys/ioctl.h>
 #include <errno.h>
+#include <dirent.h>
 #include "stagekit.h"
 
 #ifdef __linux__
@@ -66,6 +67,7 @@ static int event_fd;
 static char *default_event_file = "/dev/input/event6";
 static unsigned long features[4];
 static struct ff_effect effect;
+
 
 #endif /* HAS_LINUX_JOYSTICK_INTERFACE */
 
@@ -102,17 +104,58 @@ int sk_init(char *filename)
 {
 #ifdef HAS_LINUX_JOYSTICK_INTERFACE
 	if (filename == NULL)
+	{
+	    struct dirent *dp;
+	    const char *dir_path="/dev/input";
+	    DIR *dir = opendir(dir_path);
+	    printf("No event interface file passed. Probing for stagekit.\n");
+	    struct input_id device_info;
+	    while((dp=readdir(dir))!=NULL)
+	    {
+	        if (strspn(dp->d_name,"event"))
+	        {
+	            char tryfile[256]="";
+                //printf("%i. %s\n", i, dp->d_name);
+                strcpy(tryfile, dir_path);
+                strcat(tryfile,"/");
+                strcat(tryfile,dp->d_name);
+                printf("Looking for stage kit on %s\n",tryfile);
+                event_fd=open(tryfile, O_RDWR);
+                if (event_fd < 0) {
+                    fprintf(stderr, "Can't open %s: %s\n",
+                    tryfile, strerror(errno));
+                }
+                else
+                {
+                    ioctl(event_fd, EVIOCGID, &device_info);
+                    //printf("vendor %04hx product %04hx version %04hx", device_info.vendor, device_info.product, device_info.version);
+                    if ((device_info.vendor == 0x0e6f) && (device_info.product == 0x0103))
+                    {
+                        printf("Stage kit found on %s\n",tryfile);
+                        break;
+                    }
+                    else
+                    {
+                        close(event_fd);
+                    }
+                }
+	        }
+	    }
+	}
+	else
+	{
+
 		filename = default_event_file;
 
-	event_fd = open(filename, O_RDWR);
-	if (event_fd < 0) {
-		fprintf(stderr, "Can't open %s: %s\n",
-			filename, strerror(errno));
-		return -1;
+        event_fd = open(filename, O_RDWR);
+        if (event_fd < 0) {
+            fprintf(stderr, "Can't open %s: %s\n",
+                filename, strerror(errno));
+            return -1;
+        }
+
+        printf("Device %s opened\n", filename);
 	}
-
-	printf("Device %s opened\n", filename);
-
 	/* Query device */
 	if (ioctl(event_fd, EVIOCGBIT(EV_FF, sizeof(unsigned long) * 4), features) == -1) {
 		fprintf(stderr, "Query of rumble device failed: %s:%s\n",
